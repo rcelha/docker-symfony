@@ -11,8 +11,7 @@ class TasksController extends FOSRestController
 {
     public function getTasksAction()
     {
-        $dm = $this->get('doctrine_mongodb')->getManager();
-        $tasks = $dm->getRepository('Domain\Entity\Task')->findAll();
+        $tasks = $this->get('repository.task')->findAll();
 
         $view = $this->view($tasks, 200);
 
@@ -21,8 +20,7 @@ class TasksController extends FOSRestController
 
     public function getTaskAction($id)
     {
-        $dm = $this->get('doctrine_mongodb')->getManager();
-        $task = $dm->getRepository('Domain\Entity\Task')->find($id);
+        $task = $this->get('repository.task')->find($id);
 
         if (empty($task)) {
             throw new HttpException(404, 'Task not found.');
@@ -43,9 +41,7 @@ class TasksController extends FOSRestController
 
         $task = new Task($name);
 
-        $dm = $this->get('doctrine_mongodb')->getManager();
-        $dm->persist($task);
-        $dm->flush();
+        $this->get('repository.task')->add($task);
 
         $view = $this->view($task, 201);
 
