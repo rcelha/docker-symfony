@@ -2,38 +2,38 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Document\Product;
+use AppBundle\Document\Task;
 use FOS\RestBundle\Controller\FOSRestController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
-class ProductsController extends FOSRestController
+class TasksController extends FOSRestController
 {
-    public function getProductsAction()
+    public function getTasksAction()
     {
         $dm = $this->get('doctrine_mongodb')->getManager();
-        $products = $dm->getRepository('AppBundle:Product')->findAll();
+        $tasks = $dm->getRepository('AppBundle:Task')->findAll();
 
-        $view = $this->view($products, 200);
+        $view = $this->view($tasks, 200);
 
         return $this->handleView($view);
     }
 
-    public function getProductAction($id)
+    public function getTaskAction($id)
     {
         $dm = $this->get('doctrine_mongodb')->getManager();
-        $product = $dm->getRepository('AppBundle:Product')->find($id);
+        $task = $dm->getRepository('AppBundle:Task')->find($id);
 
-        if (empty($product)) {
-            throw new HttpException(404, 'Product not found.');
+        if (empty($task)) {
+            throw new HttpException(404, 'Task not found.');
         }
 
-        $view = $this->view($product, 200);
+        $view = $this->view($task, 200);
 
         return $this->handleView($view);
     }
 
-    public function postProductsAction(Request $request)
+    public function postTasksAction(Request $request)
     {
         $name = $request->get('name');
 
@@ -41,14 +41,14 @@ class ProductsController extends FOSRestController
             throw new HttpException(400, 'Missing required parameters');
         }
 
-        $product = new Product();
-        $product->setName($name);
+        $task = new Task();
+        $task->setName($name);
 
         $dm = $this->get('doctrine_mongodb')->getManager();
-        $dm->persist($product);
+        $dm->persist($task);
         $dm->flush();
 
-        $view = $this->view($product, 201);
+        $view = $this->view($task, 201);
 
         return $this->handleView($view);
     }

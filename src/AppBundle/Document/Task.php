@@ -7,7 +7,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 /**
  * @MongoDB\Document
  */
-class Product
+class Task
 {
     /**
      * @MongoDB\Id(strategy="auto")
