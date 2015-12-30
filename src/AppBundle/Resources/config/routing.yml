@@ -1,0 +1,3 @@
+web_tasks_list:
+    path: /tasks
+    defaults: { _controller: AppBundle:Web/Task:getTasks }

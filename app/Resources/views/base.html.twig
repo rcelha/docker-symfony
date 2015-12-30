@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>{% block title %}To-do project{% endblock %}</title>
+        {% block stylesheets %}
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+            <link rel="stylesheet" href="{{ asset('css/base.css') }}" />
+        {% endblock %}
+    </head>
+    <body>
+        <header>
+        </header>
+        <section id="main" class="container">
+            {% block base_content %}
+            {% endblock %}
+        </section>
+        <footer class="footer">
+        </footer>
+        {% block base_scripts %}
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+        {% endblock %}
+        {% block scripts %}
+        {% endblock %}
+    </body>
+</html>
