@@ -1,9 +1,22 @@
 {% extends '::base.html.twig' %}
 
 {% block base_content %}
-    <ul>
+    <table class="table table-striped">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Created at</th>
+            <th>Name</th>
+        </tr>
+    </thead>
+    <tbody>
     {% for task in tasks %}
-        <li>{{ task.name }}</li>
+        <tr>
+            <td class="col-md-1">{{ loop.index }}</td>
+            <td class="col-md-3">{{ task.createdAt|date("d.m.Y H:m:s") }}</td>
+            <td class="col-md-8">{{ task.name }}</td>
+        </tr>
     {% endfor %}
-    </ul>
+    </tbody>
+    </table>
 {% endblock %}

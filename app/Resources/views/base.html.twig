@@ -11,14 +11,15 @@
         {% endblock %}
     </head>
     <body>
-        <header>
-        </header>
-        <section id="main" class="container">
+        <div class="container">
+            <header class="page-header">
+                <h1>To-do project</h1>
+            </header>
+            <section id="main">
             {% block base_content %}
             {% endblock %}
-        </section>
-        <footer class="footer">
-        </footer>
+            </section>
+        </div>
         {% block base_scripts %}
             <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
         {% endblock %}
