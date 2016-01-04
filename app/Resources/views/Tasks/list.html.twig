@@ -1,6 +1,11 @@
 {% extends '::base.html.twig' %}
 
 {% block base_content %}
+    <div class="text-center">
+        <a href="{{ path('web_tasks_add') }}" class="btn btn-primary btn-lg" role="button">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add task
+        </a>
+    </div>
     <table class="table table-striped">
     <thead>
         <tr>
