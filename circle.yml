@@ -27,9 +27,4 @@ deployment:
       - docker commit $(docker inspect --format '{{.Id}}' test-container) sskorc/docker-symfony:$CIRCLE_BUILD_NUM-prod
     codedeploy:
       docker-symfony:
-        application_root: /
-        revision_location:
-          revision_type: S3
-          s3_location:
-            bucket: docker-symfony
-            key_pattern: {BUILD_NUM}-docker-symfony.zip
+        deployment_group: docker-symfony
