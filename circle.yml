@@ -17,14 +17,11 @@ dependencies:
     - docker build -t sskorc/docker-symfony .
     - docker run -d --name test-container -v $CIRCLE_ARTIFACTS:/var/www/docker-symfony/build/logs -v $HOME/docker-symfony:/var/www/docker-symfony sskorc/docker-symfony
     - sudo lxc-attach -n "$(docker inspect --format '{{.Id}}' test-container)" -- bash -c /var/www/docker-symfony/startup.sh
+    - docker commit $(docker inspect --format '{{.Id}}' test-container) sskorc/docker-symfony:$CIRCLE_BUILD_NUM-prod
 
 deployment:
   prod:
     branch: todo-list
-    pre:
-      - sudo lxc-attach -n "$(docker inspect --format '{{.Id}}' test-container)" -- bash -c "cd /var/www/docker-symfony && php app/console cache:clear --env=prod --no-debug"
-      - sudo lxc-attach -n "$(docker inspect --format '{{.Id}}' test-container)" -- bash -c "chown -R www-data:www-data /tmp/sf2 && chmod -R 770 /tmp/sf2"
-      - docker commit $(docker inspect --format '{{.Id}}' test-container) sskorc/docker-symfony:$CIRCLE_BUILD_NUM-prod
     codedeploy:
       docker-symfony:
         deployment_group: docker-symfony
