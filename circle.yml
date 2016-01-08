@@ -1,0 +1,35 @@
+machine:
+  python:
+    version: 2.7.3
+  services:
+    - docker
+
+dependencies:
+  cache_directories:
+    - "~/docker"
+  pre:
+    # DockerHub configuration
+    - sed "s/<EMAIL>/$DOCKER_EMAIL/;s/<AUTH>/$DOCKER_AUTH/" < .dockercfg.template > ~/.dockercfg
+    # prepare app files
+    - chmod 755 startup.sh && rm web/app_dev.php && rm web/config.php
+  override:
+    # build and run web image
+    - docker build -t sskorc/docker-symfony .
+    - docker run -d --name test-container -v $CIRCLE_ARTIFACTS:/var/www/docker-symfony/build/logs -v $HOME/docker-symfony:/var/www/docker-symfony sskorc/docker-symfony
+    - sudo lxc-attach -n "$(docker inspect --format '{{.Id}}' test-container)" -- bash -c /var/www/docker-symfony/startup.sh
+
+deployment:
+  prod:
+    branch: todo-list
+    pre:
+      - sudo lxc-attach -n "$(docker inspect --format '{{.Id}}' test-container)" -- bash -c "cd /var/www/docker-symfony && php app/console cache:clear --env=prod --no-debug"
+      - sudo lxc-attach -n "$(docker inspect --format '{{.Id}}' test-container)" -- bash -c "chown -R www-data:www-data /tmp/sf2 && chmod -R 770 /tmp/sf2"
+      - docker commit $(docker inspect --format '{{.Id}}' test-container) sskorc/docker-symfony:$CIRCLE_BUILD_NUM-prod
+    codedeploy:
+      docker-symfony:
+        application_root: /
+        revision_location:
+          revision_type: S3
+          s3_location:
+            bucket: docker-symfony
+            key_pattern: {BUILD_NUM}-docker-symfony.zip
