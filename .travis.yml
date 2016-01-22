@@ -8,7 +8,7 @@ before_install:
 
 script:
     - echo "ADD . /var/www/docker-symfony" >> Dockerfile
-    - sed -i "s/\.:\/var\/www\/docker-symfony/\/var\/www\/docker-symfony/" app/config/parameters.yml.dist
+    - sed -i "s/\.:\/var\/www\/docker-symfony/\/var\/www\/docker-symfony/" docker-compose.yml
     - docker-compose up -d
     - docker-compose run php bash -c /var/www/docker-symfony/startup.sh
     - docker commit $(docker inspect --format '{{.Id}}' dockersymfony_php_1) sskorc/docker-symfony-dist
