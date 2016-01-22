@@ -1,14 +1,16 @@
-language: php
+language: ruby
 
 services:
     - docker
 
 before_install:
     - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-    - sed "s/<EMAIL>/$DOCKER_EMAIL/;s/<AUTH>/$DOCKER_AUTH/" < .dockercfg.template > ~/.dockercfg
 
 script:
     - echo "ADD . /var/www/docker-symfony" >> Dockerfile
-    - docker build --no-cache -t sskorc/docker-symfony-dist .
+    - sed -i "s/\.:\/var\/www\/docker-symfony/\/var\/www\/docker-symfony/" app/config/parameters.yml.dist
+    - docker-compose up -d
+    - docker-compose run php bash -c /var/www/docker-symfony/startup.sh
+    - docker commit $(docker inspect --format '{{.Id}}' dockersymfony_php_1) sskorc/docker-symfony-dist
     - docker tag sskorc/docker-symfony-dist:latest sskorc/docker-symfony-dist:$TRAVIS_BUILD_NUMBER
     - docker push sskorc/docker-symfony-dist
