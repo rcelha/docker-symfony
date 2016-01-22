@@ -4,7 +4,7 @@ services:
     - docker
 
 before_install:
-    - sed "s/<EMAIL>/$DOCKER_EMAIL/;s/<AUTH>/$DOCKER_AUTH/" < .dockercfg.template > ~/.dockercfg
+    - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
 
 script:
     - echo "ADD . /var/www/docker-symfony" >> Dockerfile
