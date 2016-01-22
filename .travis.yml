@@ -10,4 +10,4 @@ script:
     - echo "ADD . /var/www/docker-symfony" >> Dockerfile
     - docker build --no-cache -t sskorc/docker-symfony-dist .
     - docker tag sskorc/docker-symfony-dist:latest sskorc/docker-symfony-dist:$TRAVIS_BUILD_NUMBER
-    - docker push spboyer/people-service
+    - docker push sskorc/docker-symfony-dist
