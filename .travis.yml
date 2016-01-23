@@ -11,8 +11,6 @@ script:
     - sed -i "s/\.:\/var\/www\/docker-symfony/\/var\/www\/docker-symfony/" docker-compose.yml
     - docker-compose up -d
     - docker exec dockersymfony_php_1 bash -c /var/www/docker-symfony/startup.sh
-    - docker ps -a
-    - docker exec dockersymfony_php_1 bash -c ls /var/www/docker-symfony
-    - docker commit dockersymfony_php_1 sskorc/docker-symfony-dist
+    - docker commit $(docker ps -l -q) sskorc/docker-symfony-dist
     - docker tag sskorc/docker-symfony-dist:latest sskorc/docker-symfony-dist:$TRAVIS_BUILD_NUMBER
     - docker push sskorc/docker-symfony-dist
