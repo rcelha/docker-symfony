@@ -10,7 +10,7 @@ script:
     - echo "ADD . /var/www/docker-symfony" >> Dockerfile
     - sed -i "s/\.:\/var\/www\/docker-symfony/\/var\/www\/docker-symfony/" docker-compose.yml
     - docker-compose up -d
-    - docker exec dockersymfony_php_1 bash -c /var/www/docker-symfony/startup.sh
-    - docker commit $(docker ps -l -q) sskorc/docker-symfony-dist
+    - docker-compose run php bash -c /var/www/docker-symfony/startup.sh
+    - docker commit dockersymfony_php_run_1 sskorc/docker-symfony-dist
     - docker tag sskorc/docker-symfony-dist:latest sskorc/docker-symfony-dist:$TRAVIS_BUILD_NUMBER
     - docker push sskorc/docker-symfony-dist
