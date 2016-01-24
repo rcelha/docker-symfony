@@ -7,8 +7,6 @@ before_install:
     - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
 
 script:
-    - echo -e "\nADD . /var/www/docker-symfony\n" >> Dockerfile
-    - echo -e "\nRUN /var/www/docker-symfony/startup.sh\n" >> Dockerfile
-    - docker build -t sskorc/docker-symfony-dist .
+    - docker build -f Dockerfile.remote -t sskorc/docker-symfony-dist .
     - docker tag sskorc/docker-symfony-dist:latest sskorc/docker-symfony-dist:$TRAVIS_BUILD_NUMBER
     - docker push sskorc/docker-symfony-dist
