@@ -8,7 +8,5 @@ before_install:
 
 script:
     - docker build -f Dockerfile.remote -t sskorc/docker-symfony-dist .
-    - docker build -f Dockerfile.nginx -t sskorc/docker-symfony-nginx .
     - docker tag sskorc/docker-symfony-dist:latest sskorc/docker-symfony-dist:$TRAVIS_BUILD_NUMBER
     - docker push sskorc/docker-symfony-dist
-    - docker push sskorc/docker-symfony-nginx
